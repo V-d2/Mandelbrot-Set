@@ -179,9 +179,10 @@ int main()
 		///Draw
 		window.clear(); // clear the window buffer with the default color (black)
 
-
-
-
+		/*
+		draw the ComplexPlane object
+	    draw the Text object
+		*/
 
 
 		//window.draw(...);		
