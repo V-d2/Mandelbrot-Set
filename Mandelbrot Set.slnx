@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="Mandelbrot Set.vcxproj" />
+  <Project Path="Mandelbrot Set.vcxproj" Id="56be3be3-f8d1-4eca-a810-b61470a835ce" />
 </Solution>

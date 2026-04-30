@@ -26,9 +26,9 @@ public:
 	void loadText(Text& text);
 	void updateRender();
 private:
-	int countIterations(Vector2f coord);
+	size_t countIterations(Vector2f coord);
 	void iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b);
-	Vector2i mapPixeltoCoords(Vector2i mousePixel);
+	Vector2f mapPixelToCoords(Vector2i mousePixel); // changed to return Vector2f
 
 	VertexArray m_vArray;
 	State m_state;
