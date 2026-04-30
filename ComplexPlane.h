@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <sstream>
 
 const unsigned int MAX_ITER = 64;
 const float BASE_WIDTH = 4.0;
@@ -9,6 +10,7 @@ const float BASE_HEIGHT = 4.0;
 const float BASE_ZOOM = 0.5;
 
 using namespace sf;
+using namespace std;
 
 enum class State {
 	CALCULATING,
