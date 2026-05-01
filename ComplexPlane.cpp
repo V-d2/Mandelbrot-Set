@@ -74,7 +74,7 @@ void ComplexPlane::updateRender() {
 size_t ComplexPlane::countIterations(Vector2f coord){
 	int i = 0;
 	complex<float> c(coord.x, coord.y); // create a complex number from the coordinates of the pixel, it is used to represent the corresponding point in the complex plane
-	complex<float> z(coord.x, coord.y); 
+	complex<float> z(0, 0); 
 	while (abs(z) < 2.0 && i < 64)
 	{
 		z = z * z + c;		
@@ -91,19 +91,19 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b) {
 		b = 0;
 	}
 	else {
-		r = (count - 64) % 256; // calculate the red component based on the number of iterations, it is used to create a color gradient based on the number of iterations
-		g = (count - 64) % 256; // calculate the green component based on the number of iterations, it is used to create a color gradient based on the number of iterations
-		b = (count - 64) % 256; // calculate the blue component based on the number of iterations, it is used to create a color gradient based on the number of iterations
+		r = (count * 5) % 256; // calculate the red component of the color based on the number of iterations, it is used to create a gradient of colors based on the number of iterations
+		g = (count * 10) % 256; // calculate the green component of the color based on the number of iterations, it is used to create a gradient of colors based on the number of iterations
+		b = (count * 15) % 256; // calculate the blue component of the color based on the number of iterations, it is used to create a gradient of colors based on the number of iterations
 	}
 }
 
 
 Vector2f ComplexPlane::mapPixelToCoords(Vector2i mousePixel) {
-	float xPercent = (float)mousePixel.x / m_pixelSize.x;
-	float yPercent = 1.0f - (float)mousePixel.y / m_pixelSize.y;
+	float xPercent = (float)mousePixel.x / m_pixelSize.x; // calculate the percentage of the x coordinate of the mouse pixel relative to the width of the window, it is used to map the x coordinate of the mouse pixel to the corresponding x coordinate in the complex plane//
+	float yPercent = (float)mousePixel.y / m_pixelSize.y; // calculate the percentage of the y coordinate of the mouse pixel relative to the height of the window, it is used to map the y coordinate of the mouse pixel to the corresponding y coordinate in the complex plane, it is subtracted from 1 because the y coordinate of the mouse pixel is measured from the top of the window, while the y coordinate of the complex plane is measured from the bottom of the window
 
-	float x = (m_plane_center.x - m_plane_size.x / 2) + xPercent * m_plane_size.x;
-	float y = (m_plane_center.y - m_plane_size.y / 2) + yPercent * m_plane_size.y;
+	float x = m_plane_center.x - m_plane_size.x / 2 + xPercent * m_plane_size.x;
+	float y = m_plane_center.y - m_plane_size.y / 2 + yPercent * m_plane_size.y;
 
 	return Vector2f(x, y);
 }

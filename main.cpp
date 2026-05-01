@@ -25,9 +25,9 @@ int main()
 
 	VideoMode vm(pixelWidth, pixelHeight);
 
-	RenderWindow window(vm, "Mandelbrot", Style::Resize | sf::Style::Close);
+	RenderWindow window(vm, "Mandelbrot", Style::Resize | sf::Style::Default);
 
-	//ComplexPlane  compPlane; // default constructor sets up the complex plane to be the same size as the window, with the origin at the center of the screen
+	ComplexPlane compPlane(pixelWidth, pixelHeight); // create a ComplexPlane object with the same size as the window, it is used to display the Mandelbrot set on the screen
 
 
 	Texture texture; // texture is an image that can be drawn to the screen. It is loaded from a file and can be used to draw sprites, shapes, etc.
@@ -44,66 +44,9 @@ int main()
 	}
 
 
+
+	Text text; // text is a drawable object that can be used to draw text to the screen. It is used to display the information about the complex plane on the screen
 	
-
-
-
-
-	/*
-
-	sf::Texture texture;
-	if (!texture.loadFromFile("image.png")) {
-		cerr << "Failed to load image.png" << endl;
-		return -1;
-	}
-
-	sf::Vector2u size = texture.getSize();
-	
-	sf::VertexArray quad(sf::Quads, 4);
-
-	// screen size (where it appears)
-	quad[0].position = sf::Vector2f(600, 0);
-	quad[1].position = sf::Vector2f(1200, 0);
-	quad[2].position = sf::Vector2f(1200, 600);
-	quad[3].position = sf::Vector2f(600, 600);
-
-	// FULL texture mapping
-	quad[0].texCoords = sf::Vector2f(0, 0);
-	quad[1].texCoords = sf::Vector2f(size.x, 0);
-	quad[2].texCoords = sf::Vector2f(size.x, size.y);
-	quad[3].texCoords = sf::Vector2f(0, size.y);
-	*/
-
-
-
-	/*
-
-	
-	sf::VertexArray mesh(sf::Triangles, 6);
-	
-	// ---------- Triangle 1 ----------
-	mesh[0].position = { 100, 100 };
-	mesh[1].position = { 300, 100 };
-	mesh[2].position = { 300, 300 };
-
-	mesh[0].texCoords = { 0, 0 };
-	mesh[1].texCoords = { (float)size.x, 0 };
-	mesh[2].texCoords = { (float)size.x, (float)size.y };
-	*/
-	
-	/*
-	// ---------- Triangle 2 ----------
-	mesh[3].position = { 50, 100 };
-	mesh[4].position = { 300, 300 };
-	mesh[5].position = { 50, 300 };
-
-	mesh[3].texCoords = { 0, 0 };
-	mesh[4].texCoords = { (float)size.x, (float)size.y };
-	mesh[5].texCoords = { 0, (float)size.y };
-	*/
-
-
-	//square with image texture
 
 
 
@@ -142,16 +85,17 @@ int main()
 					std::cout << "the left button was pressed" << std::endl;
 					std::cout << "mouse x: " << event.mouseButton.x << std::endl; // event.mouseButton.x is the x coordinate of the mouse when the button was pressed
 					std::cout << "mouse y: " << event.mouseButton.y << std::endl;
-					//ComplexPlane::zoomIn();
-					//ComplexPlane::setCenter();
+					compPlane.setCenter(Vector2i(event.mouseButton.x, event.mouseButton.y));
+					compPlane.zoomIn();
+					
 				}
 				if (event.mouseButton.button == sf::Mouse::Right) // if the right mouse button was pressed
 				{
 					std::cout << "the rigt button was pressed" << std::endl;
 					std::cout << "mouse x: " << event.mouseButton.x << std::endl;
 					std::cout << "mouse y: " << event.mouseButton.y << std::endl;
-					//ComplexPlane::zoomOut();
-					//ComplexPlane::setCenter();
+					compPlane.setCenter(Vector2i(event.mouseButton.x, event.mouseButton.y));
+					compPlane.zoomOut();
 
 				}
 			}
@@ -160,7 +104,7 @@ int main()
 				std::cout << "mouse moved" << std::endl;
 				std::cout << "mouse x: " << event.mouseMove.x << std::endl;
 				std::cout << "mouse y: " << event.mouseMove.y << std::endl;
-				//ComplexPlane::setMouseLocation(x, y);
+				compPlane.setMouseLocation(Vector2i(event.mouseButton.x, event.mouseButton.y));
 			}
 		}
 
@@ -169,21 +113,22 @@ int main()
 
 		///Update
 
-		//mplexPlane::updateRender();
-		//mplexPlane::loadText ();
-
+		compPlane.updateRender();
 
 
 
 
 		///Draw
 		window.clear(); // clear the window buffer with the default color (black)
+		compPlane.loadText(text);
+
+
 
 		/*
 		draw the ComplexPlane object
 	    draw the Text object
 		*/
-
+		compPlane.draw(window, sf::RenderStates::Default); // draw the complex plane to the window, it is used to display the Mandelbrot set on the screen
 
 		//window.draw(...);		
 		
