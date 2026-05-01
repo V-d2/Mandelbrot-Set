@@ -51,7 +51,7 @@ void ComplexPlane::loadText(Text& text){
 	ss << "Cursor:" << m_mouseLocation.x << ", " << m_mouseLocation.y << "\n";
 	ss << "Left-click to Zoom in\n";
 	ss << "Right-click to Zoom out\n";
-	text.setString(ss.str());
+	text.setString(ss.str()); // set the string of the text object to the stringstream, it is used to display the information about the complex plane on the screen
 }
 
 void ComplexPlane::updateRender() {
@@ -72,17 +72,38 @@ void ComplexPlane::updateRender() {
 
 
 size_t ComplexPlane::countIterations(Vector2f coord){
-	size_t count = 0;
+	int i = 0;
+	complex<float> c(coord.x, coord.y); // create a complex number from the coordinates of the pixel, it is used to represent the corresponding point in the complex plane
+	complex<float> z(coord.x, coord.y); 
+	while (abs(z) < 2.0 && i < 64)
+	{
+		z = z * z + c;		
+		i++;
+	}
 
-	return count;
+	return i;
 }
 
 void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b) {
-
+	if (count == MAX_ITER) {
+		r = 0;
+		g = 0;
+		b = 0;
+	}
+	else {
+		r = (count - 64) % 256; // calculate the red component based on the number of iterations, it is used to create a color gradient based on the number of iterations
+		g = (count - 64) % 256; // calculate the green component based on the number of iterations, it is used to create a color gradient based on the number of iterations
+		b = (count - 64) % 256; // calculate the blue component based on the number of iterations, it is used to create a color gradient based on the number of iterations
+	}
 }
 
 
 Vector2f ComplexPlane::mapPixelToCoords(Vector2i mousePixel) {
+	float xPercent = (float)mousePixel.x / m_pixelSize.x;
+	float yPercent = 1.0f - (float)mousePixel.y / m_pixelSize.y;
 
-	return { 0.0f, 0.0f };
+	float x = (m_plane_center.x - m_plane_size.x / 2) + xPercent * m_plane_size.x;
+	float y = (m_plane_center.y - m_plane_size.y / 2) + yPercent * m_plane_size.y;
+
+	return Vector2f(x, y);
 }

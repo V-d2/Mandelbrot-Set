@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <sstream>
+#include <complex>
+
 
 const unsigned int MAX_ITER = 64;
 const float BASE_WIDTH = 4.0;
