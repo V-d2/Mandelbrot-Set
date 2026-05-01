@@ -17,15 +17,15 @@ int main()
 
 {
 
-	int pixelWidth = VideoMode::getDesktopMode().width;
+	int pixelWidth = VideoMode::getDesktopMode().width / 4;
 
-	int pixelHeight = VideoMode::getDesktopMode().height;
+	int pixelHeight = VideoMode::getDesktopMode().height /4;
 
 	cout << "Desktop resolution: " << pixelWidth << "x" << pixelHeight << endl;
 
 	VideoMode vm(pixelWidth, pixelHeight);
 
-	RenderWindow window(vm, "Mandelbrot", Style::Resize | sf::Style::Default);
+	RenderWindow window(vm, "Mandelbrot", Style::Resize | sf::Style::Close);
 
 	ComplexPlane compPlane(pixelWidth, pixelHeight); // create a ComplexPlane object with the same size as the window, it is used to display the Mandelbrot set on the screen
 
@@ -46,7 +46,10 @@ int main()
 
 
 	Text text; // text is a drawable object that can be used to draw text to the screen. It is used to display the information about the complex plane on the screen
-	
+	text.setFont(font);
+	text.setCharacterSize(16);
+	text.setFillColor(sf::Color::White);
+	text.setPosition(10.f, 10.f);
 
 
 
@@ -104,7 +107,7 @@ int main()
 				std::cout << "mouse moved" << std::endl;
 				std::cout << "mouse x: " << event.mouseMove.x << std::endl;
 				std::cout << "mouse y: " << event.mouseMove.y << std::endl;
-				compPlane.setMouseLocation(Vector2i(event.mouseButton.x, event.mouseButton.y));
+				compPlane.setMouseLocation(Vector2i(event.mouseButton.x, event.mouseButton.y)); // set the mouse location in the complex plane to the location of the mouse in the window, it is used to display the coordinates of the mouse in the complex plane on the screen
 			}
 		}
 
@@ -129,7 +132,7 @@ int main()
 	    draw the Text object
 		*/
 		compPlane.draw(window, sf::RenderStates::Default); // draw the complex plane to the window, it is used to display the Mandelbrot set on the screen
-
+		window.draw(text);
 		//window.draw(...);		
 		
 		//window.draw(quad, &texture);
