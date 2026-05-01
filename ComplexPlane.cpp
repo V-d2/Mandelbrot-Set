@@ -51,13 +51,13 @@ void ComplexPlane::loadText(Text& text){
 	ss << "Cursor:" << m_mouseLocation.x << ", " << m_mouseLocation.y << "\n";
 	ss << "Left-click to Zoom in\n";
 	ss << "Right-click to Zoom out\n";
+	ss << "z: " << m_z;
 	text.setString(ss.str()); // set the string of the text object to the stringstream, it is used to display the information about the complex plane on the screen
+
 }
 
 void ComplexPlane::updateRender() {
-	//m_pixelSize.x = VideoMode::getDesktopMode().width;
-	//m_pixelSize.y = VideoMode::getDesktopMode().height;
-	cout << "pixel size: " << m_pixelSize.x << "x" << m_pixelSize.y << endl;
+	 cout << "pixel size: " << m_pixelSize.x << "x" << m_pixelSize.y << " state" << (int)m_state << endl;
 	if (m_state == State::CALCULATING) {
 		for (int i = 0; i < m_pixelSize.y; i++) {
 			for (int j = 0; j < m_pixelSize.x; j++) {
@@ -78,12 +78,11 @@ size_t ComplexPlane::countIterations(Vector2f coord) { // the coord is the coord
 	int i = 0;
 	complex<float> c(coord.x, coord.y); // create a complex number from the coordinates of the pixel, it is used to represent the corresponding point in the complex plane
 	complex<float> z(0, 0); 
-	while (abs(z) < 2.0 && i < MAX_ITER)
+	while (abs(z) < 2.0 && i < MAX_ITER) // the loop begins with z = 0, so at least one iteration.
 	{
-		z = z * z + c;		
+		z = z * z + c;
 		i++; // the last iteraton makes the i == MAX_ITER
 	}
-
 	return i;
 }
 
@@ -94,10 +93,10 @@ void ComplexPlane::iterationsToRGB(size_t iteration, Uint8& r, Uint8& g, Uint8& 
 		b = 0;
 	}
 	else {
-		r = (iteration * 15) % 256; // calculate the red component of the color based on the number of iterations, it is used to create a gradient of colors based on the number of iterations
-		g = (iteration * 6) % 256; // calculate the green component of the color based on the number of iterations, it is used to create a gradient of colors based on the number of iterations
-		b = (iteration * 3) % 256; // calculate the blue component of the color based on the number of iterations, it is used to create a gradient of colors based on the number of iterations
-		//cout <<"iterator: " << iteration << " r: " << (int)r << " g: " << (int)g << " b: " << (int)b << endl; // print the color values to the console for debugging purposes
+		float percent = (float)iteration / MAX_ITER; // calculate the percentage of numbers iterations from 1 MAX_ITER		r = (Uint8)(9 * (1 - t) * t * t * t * 255);
+		g = (Uint8)(9 * (1 - percent) * percent * percent * percent * 255);
+		g = (Uint8)(15 * (1 - percent) * (1 - percent) * percent * percent * 255);
+		b = (Uint8)(8.5 * (1 - percent) * (1 - percent) * (1 - percent) * percent * 255);
 	}
 }
 

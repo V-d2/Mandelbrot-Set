@@ -42,5 +42,7 @@ private:
 	Vector2f m_plane_size;
 	int m_zoom_Count;
 	float m_aspectRatio;
+
+	complex<float> m_z;
 };
 
