@@ -92,6 +92,8 @@ size_t ComplexPlane::countIterations(Vector2f coord) { // the coord is the coord
 	return i;
 }
 
+
+// this function change the color r,g,b, depend on how many iteration needed to reach the MAX_ITER
 void ComplexPlane::iterationsToRGB(size_t iteration, Uint8& r, Uint8& g, Uint8& b) {
 	if (iteration == MAX_ITER) {
 		r = 0;
@@ -100,22 +102,33 @@ void ComplexPlane::iterationsToRGB(size_t iteration, Uint8& r, Uint8& g, Uint8& 
 	}
 	else {
 		float percent = (float)iteration / MAX_ITER; // calculate the percentage of numbers iterations from 0 to MAX_ITER.  iteration begin with 1
-		r = (9 * (1 - percent) * percent * percent * percent * 255);
+		r = (9 * (1 - percent) * percent * percent * percent * 255); // use the formula forth degree.
 		//r = 2 * -(pow(percent - 1, 2) - 1 / 2.0) * 255;
 		g = (15 * (1 - percent) * (1 - percent) * percent * percent * 255);
 		//b = 2 * -(pow(percent, 2) - 1 / 2.0) * 255;
-		b = (9 * (1 - percent) * (1 - percent) * (1 - percent) * percent * 255);
-		
-		
+		b = (9 * (1 - percent) * (1 - percent) * (1 - percent) * percent * 255);		
 	}
 }
 
-
+// this function serve three separate purposes: depends who call it.
+// 1) it is used to map every pixel coordinates to the corresponding coordinates in the complex plane, 
+// updateRender() calls it to determine the corresponding point in the complex plane for each pixel 
+// when calculating the colors of the pixels in the complex plane.
+// 2) and it is also used to determine the corresponding point in the complex plane for the 
+// pixel when setting the center of the complex plane when zoomIn()  and zoomOut() 
+// 3) and when updating the mouse location in the complex plane when the mouse is moved, in setMouseLocation(),
+// it is used to display the coordinates of the mouse of the complex plane on the screen
 Vector2f ComplexPlane::mapPixelToCoords(Vector2i screenPixel) {
 	float xPercent = (float)screenPixel.x / m_pixelSize.x; // xPercent is the percentage of the x coordinate of the pixel in the window
 	float yPercent = (float)screenPixel.y / m_pixelSize.y; 
 
-	float x = m_plane_center.x - m_plane_size.x / 2 + xPercent * m_plane_size.x;
-	float y = m_plane_center.y - m_plane_size.y / 2 + yPercent * m_plane_size.y;
+	//float x = m_plane_center.x - m_plane_size.x / 2 + xPercent * m_plane_size.x;
+	//float y = (m_plane_center.y) * ( m_plane_size.y / 2 + yPercent * m_plane_size.y); // the negative sign is used to flip the y coordinate
+	
+	//float x = (float)(screenPixel.x - 0) / (float)(m_pixelSize.x) *  ( (m_plane_center.x + m_plane_size.x / 2.0f ) - (m_plane_center.x - m_plane_size.x / 2.0f) ) + (m_plane_center.x - m_plane_size.x / 2.0f); // the x coordinate of the corresponding point in the complex plane, it is used to determine the corresponding point in the complex plane for the pixel
+	//float y = (float)(screenPixel.y - 0) / (float)(m_pixelSize.y) *  ( (m_plane_center.y - m_plane_size.y / 2.0f ) - (m_plane_center.y + m_plane_size.y / 2.0f) ) + (m_plane_center.y + m_plane_size.y / 2.0f); // the y coordinate of the corresponding point in the complex plane, it is used to determine the corresponding point in the complex plane for the pixel
+	float x = (float)(screenPixel.x - 0) / (float)(m_pixelSize.x) * ((m_plane_center.x + m_plane_size.x / 2.0f ) - ((m_plane_center.x - m_plane_size.x / 2.0f) )) + (m_plane_center.x - m_plane_size.x / 2.0f); // the x coordinate of the corresponding point in the complex plane, it is used to determine the corresponding point in the complex plane for the pixel
+	float y = (float)(screenPixel.y - 0) / (float)(m_pixelSize.y) * ((m_plane_center.y - m_plane_size.y / 2.0f) - ((m_plane_center.y + m_plane_size.y / 2.0f))) - (m_plane_center.y - m_plane_size.y / 2.0f); // the y coordinate of the corresponding point in the complex plane, it is used to determine the corresponding point in the complex plane for the pixel
+
 	return Vector2f(x, y);
 }
