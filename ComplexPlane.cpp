@@ -16,7 +16,10 @@ ComplexPlane::ComplexPlane(int pixelWidth, int pixelHeight) {
 }
 
 void ComplexPlane::draw(RenderTarget& target, RenderStates states) const {
-	target.draw(m_vArray, states); // draw the vertex array to the screen, it is used to display the complex plane
+	if (m_state == State::DISPLAYING) {
+		target.draw(m_vArray, states); // draw the vertex array to the screen, it is used to display the complex plane
+	}
+
 }
 
 void ComplexPlane::zoomIn() {
@@ -40,6 +43,9 @@ void ComplexPlane::setCenter(Vector2i mousePixel) {
 	m_state = State::CALCULATING;
 }
 
+
+// this function used in main.cpp to update the mouse location in the complex plane when the mouse is moved, 
+// it is used to display the coordinates of the mouse in the complex plane on the screen
 void ComplexPlane::setMouseLocation(Vector2i mousePixel) {
 	m_mouseLocation  = ComplexPlane::mapPixelToCoords(mousePixel);
 }
@@ -96,11 +102,10 @@ void ComplexPlane::iterationsToRGB(size_t iteration, Uint8& r, Uint8& g, Uint8& 
 		float percent = (float)iteration / MAX_ITER; // calculate the percentage of numbers iterations from 0 to MAX_ITER.  iteration begin with 1
 		r = (9 * (1 - percent) * percent * percent * percent * 255);
 		//r = 2 * -(pow(percent - 1, 2) - 1 / 2.0) * 255;
-		
 		g = (15 * (1 - percent) * (1 - percent) * percent * percent * 255);
-		
-		b = (9 * (1 - percent) * (1 - percent) * (1 - percent) * percent * 255);
 		//b = 2 * -(pow(percent, 2) - 1 / 2.0) * 255;
+		b = (9 * (1 - percent) * (1 - percent) * (1 - percent) * percent * 255);
+		
 		
 	}
 }
@@ -112,6 +117,5 @@ Vector2f ComplexPlane::mapPixelToCoords(Vector2i screenPixel) {
 
 	float x = m_plane_center.x - m_plane_size.x / 2 + xPercent * m_plane_size.x;
 	float y = m_plane_center.y - m_plane_size.y / 2 + yPercent * m_plane_size.y;
-
 	return Vector2f(x, y);
 }
