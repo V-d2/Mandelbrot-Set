@@ -57,7 +57,7 @@ void ComplexPlane::loadText(Text& text){
 }
 
 void ComplexPlane::updateRender() {
-	 cout << "pixel size: " << m_pixelSize.x << "x" << m_pixelSize.y << " state" << (int)m_state << endl;
+	//cout << "pixel size: " << m_pixelSize.x << "x" << m_pixelSize.y << " state" << (int)m_state << endl;
 	if (m_state == State::CALCULATING) {
 		for (int i = 0; i < m_pixelSize.y; i++) {
 			for (int j = 0; j < m_pixelSize.x; j++) {
@@ -93,10 +93,15 @@ void ComplexPlane::iterationsToRGB(size_t iteration, Uint8& r, Uint8& g, Uint8& 
 		b = 0;
 	}
 	else {
-		float percent = (float)iteration / MAX_ITER; // calculate the percentage of numbers iterations from 1 MAX_ITER		r = (Uint8)(9 * (1 - t) * t * t * t * 255);
-		g = (Uint8)(9 * (1 - percent) * percent * percent * percent * 255);
-		g = (Uint8)(15 * (1 - percent) * (1 - percent) * percent * percent * 255);
-		b = (Uint8)(8.5 * (1 - percent) * (1 - percent) * (1 - percent) * percent * 255);
+		float percent = (float)iteration / MAX_ITER; // calculate the percentage of numbers iterations from 0 to MAX_ITER.  iteration begin with 1
+		r = (9 * (1 - percent) * percent * percent * percent * 255);
+		//r = 2 * -(pow(percent - 1, 2) - 1 / 2.0) * 255;
+		
+		g = (15 * (1 - percent) * (1 - percent) * percent * percent * 255);
+		
+		b = (9 * (1 - percent) * (1 - percent) * (1 - percent) * percent * 255);
+		//b = 2 * -(pow(percent, 2) - 1 / 2.0) * 255;
+		
 	}
 }
 

@@ -107,7 +107,7 @@ int main()
 				std::cout << "mouse moved" << std::endl;
 				std::cout << "mouse x: " << event.mouseMove.x << std::endl;
 				std::cout << "mouse y: " << event.mouseMove.y << std::endl;
-				compPlane.setMouseLocation(Vector2i(event.mouseButton.x, event.mouseButton.y)); // set the mouse location in the complex plane to the location of the mouse in the window, it is used to display the coordinates of the mouse in the complex plane on the screen
+				compPlane.setMouseLocation(Vector2i(event.mouseMove.x, event.mouseMove.y)); // set the mouse location in the complex plane to the location of the mouse in the window, it is used to display the coordinates of the mouse in the complex plane on the screen
 			}
 		}
 
