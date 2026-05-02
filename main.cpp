@@ -17,9 +17,9 @@ int main()
 
 {
 
-	int pixelWidth = VideoMode::getDesktopMode().width / 4;
+	int pixelWidth = VideoMode::getDesktopMode().width / 2;
 
-	int pixelHeight = VideoMode::getDesktopMode().height /4;
+	int pixelHeight = VideoMode::getDesktopMode().height /2;
 
 	cout << "Desktop resolution: " << pixelWidth << "x" << pixelHeight << endl;
 
