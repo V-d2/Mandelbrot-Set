@@ -127,8 +127,15 @@ Vector2f ComplexPlane::mapPixelToCoords(Vector2i screenPixel) {
 	
 	//float x = (float)(screenPixel.x - 0) / (float)(m_pixelSize.x) *  ( (m_plane_center.x + m_plane_size.x / 2.0f ) - (m_plane_center.x - m_plane_size.x / 2.0f) ) + (m_plane_center.x - m_plane_size.x / 2.0f); // the x coordinate of the corresponding point in the complex plane, it is used to determine the corresponding point in the complex plane for the pixel
 	//float y = (float)(screenPixel.y - 0) / (float)(m_pixelSize.y) *  ( (m_plane_center.y - m_plane_size.y / 2.0f ) - (m_plane_center.y + m_plane_size.y / 2.0f) ) + (m_plane_center.y + m_plane_size.y / 2.0f); // the y coordinate of the corresponding point in the complex plane, it is used to determine the corresponding point in the complex plane for the pixel
-	float x = (float)(screenPixel.x - 0) / (float)(m_pixelSize.x) * ((m_plane_center.x + m_plane_size.x / 2.0f ) - ((m_plane_center.x - m_plane_size.x / 2.0f) )) + (m_plane_center.x - m_plane_size.x / 2.0f); // the x coordinate of the corresponding point in the complex plane, it is used to determine the corresponding point in the complex plane for the pixel
-	float y = (float)(screenPixel.y - 0) / (float)(m_pixelSize.y) * ((m_plane_center.y - m_plane_size.y / 2.0f) - ((m_plane_center.y + m_plane_size.y / 2.0f))) - (m_plane_center.y - m_plane_size.y / 2.0f); // the y coordinate of the corresponding point in the complex plane, it is used to determine the corresponding point in the complex plane for the pixel
+
+	float x = (float)(screenPixel.x - 0) / (float)(m_pixelSize.x) * 
+		((m_plane_center.x + m_plane_size.x / 2.0f) - ((m_plane_center.x - m_plane_size.x / 2.0f) )) + 
+		(m_plane_center.x - m_plane_size.x / 2.0f); // the x coordinate of the corresponding point in the complex plane, it is used to determine the corresponding point in the complex plane for the pixel
+
+	float y = (float)(screenPixel.y - m_pixelSize.y) / (float)(0 - m_pixelSize.y) *
+		((m_plane_center.y + m_plane_size.y / 2.0f) - ((m_plane_center.y - m_plane_size.y / 2.0f))) +
+		(m_plane_center.y - m_plane_size.y / 2.0f); // the y coordinate of the corresponding point in the complex plane, it is used to determine the corresponding point in the complex plane for the pixel
+
 
 	return Vector2f(x, y);
 }
