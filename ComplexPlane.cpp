@@ -17,7 +17,7 @@ ComplexPlane::ComplexPlane(int pixelWidth, int pixelHeight) {
 
 void ComplexPlane::draw(RenderTarget& target, RenderStates states) const {
 	if (m_state == State::DISPLAYING) {
-		target.draw(m_vArray, states); // draw the vertex array to the screen, it is used to display the complex plane
+		target.draw(m_vArray); // draw the vertex array to the screen, it is used to display the complex plane
 	}
 
 }
@@ -84,7 +84,7 @@ size_t ComplexPlane::countIterations(Vector2f coord) { // the coord is the coord
 	int i = 0;
 	complex<float> c(coord.x, coord.y); // create a complex number from the coordinates of the pixel, it is used to represent the corresponding point in the complex plane
 	complex<float> z(0, 0); 
-	while (abs(z) < 2.0 && i < MAX_ITER) // the loop begins with z = 0, so at least one iteration.
+	while (abs(z) < 2.0 && i < (int)MAX_ITER) // the loop begins with z = 0, so at least one iteration.
 	{
 		z = z * z + c;
 		i++; // the last iteraton makes the i == MAX_ITER
@@ -119,8 +119,8 @@ void ComplexPlane::iterationsToRGB(size_t iteration, Uint8& r, Uint8& g, Uint8& 
 // 3) and when updating the mouse location in the complex plane when the mouse is moved, in setMouseLocation(),
 // it is used to display the coordinates of the mouse of the complex plane on the screen
 Vector2f ComplexPlane::mapPixelToCoords(Vector2i screenPixel) {
-	float xPercent = (float)screenPixel.x / m_pixelSize.x; // xPercent is the percentage of the x coordinate of the pixel in the window
-	float yPercent = (float)screenPixel.y / m_pixelSize.y; 
+	//float xPercent = (float)screenPixel.x / m_pixelSize.x; // xPercent is the percentage of the x coordinate of the pixel in the window
+	//float yPercent = (float)screenPixel.y / m_pixelSize.y; 
 
 	//float x = m_plane_center.x - m_plane_size.x / 2 + xPercent * m_plane_size.x;
 	//float y = (m_plane_center.y) * ( m_plane_size.y / 2 + yPercent * m_plane_size.y); // the negative sign is used to flip the y coordinate

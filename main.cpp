@@ -123,7 +123,7 @@ int main()
 
 		///Draw
 		window.clear(); // clear the window buffer with the default color (black)
-		compPlane.loadText(text);
+		compPlane.loadText(text); // modify the texe object prior to draw it.
 
 
 
