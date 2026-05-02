@@ -43,6 +43,6 @@ private:
 	int m_zoom_Count;
 	float m_aspectRatio;
 
-	complex<float> m_z;
+	complex<float> m_z; // m_z is the complex number that is used to calculate the Mandelbrot set, 
 };
 

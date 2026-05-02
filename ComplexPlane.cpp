@@ -62,7 +62,7 @@ void ComplexPlane::updateRender() {
 		for (int i = 0; i < m_pixelSize.y; i++) {
 			for (int j = 0; j < m_pixelSize.x; j++) {
 				m_vArray[j + i * m_pixelSize.x].position = { (float)j,(float)i };
-				Vector2f coord = ComplexPlane::mapPixelToCoords(Vector2i(j, i));
+				Vector2f coord = ComplexPlane::mapPixelToCoords(Vector2i(j, i)); // map the pixel coordinates to the corresponding coordinates in the complex plane
 				size_t it = countIterations(coord);
 				Uint8 r, g, b;
 				iterationsToRGB(it, r, g, b); // convert the number of iterations to a color, it is used to determine the color of the pixel based on the number of iterations it takes for the corresponding point in the complex plane to escape
@@ -106,9 +106,9 @@ void ComplexPlane::iterationsToRGB(size_t iteration, Uint8& r, Uint8& g, Uint8& 
 }
 
 
-Vector2f ComplexPlane::mapPixelToCoords(Vector2i mousePixel) {
-	float xPercent = (float)mousePixel.x / m_pixelSize.x; // calculate the percentage of the x coordinate of the mouse pixel relative to the width of the window, it is used to map the x coordinate of the mouse pixel to the corresponding x coordinate in the complex plane//
-	float yPercent = (float)mousePixel.y / m_pixelSize.y; // calculate the percentage of the y coordinate of the mouse pixel relative to the height of the window, it is used to map the y coordinate of the mouse pixel to the corresponding y coordinate in the complex plane, it is subtracted from 1 because the y coordinate of the mouse pixel is measured from the top of the window, while the y coordinate of the complex plane is measured from the bottom of the window
+Vector2f ComplexPlane::mapPixelToCoords(Vector2i screenPixel) {
+	float xPercent = (float)screenPixel.x / m_pixelSize.x; // xPercent is the percentage of the x coordinate of the pixel in the window
+	float yPercent = (float)screenPixel.y / m_pixelSize.y; 
 
 	float x = m_plane_center.x - m_plane_size.x / 2 + xPercent * m_plane_size.x;
 	float y = m_plane_center.y - m_plane_size.y / 2 + yPercent * m_plane_size.y;
