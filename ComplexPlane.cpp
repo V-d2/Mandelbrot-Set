@@ -84,7 +84,7 @@ size_t ComplexPlane::countIterations(Vector2f coord) { // the coord is the coord
 	int i = 0;
 	complex<float> c(coord.x, coord.y); // create a complex number from the coordinates of the pixel, it is used to represent the corresponding point in the complex plane
 	complex<float> z(0, 0); 
-	while (abs(z) < 2.0 && i < (int)MAX_ITER) // the loop begins with z = 0, so at least one iteration.
+	while (abs(z) < ESCAPE_RADIUS && i < (int)MAX_ITER) // the loop begins with z = 0, so at least one iteration.
 	{
 		z = z * z + c;
 		i++; // the last iteraton makes the i == MAX_ITER
@@ -99,6 +99,11 @@ void ComplexPlane::iterationsToRGB(size_t iteration, Uint8& r, Uint8& g, Uint8& 
 		r = 0;
 		g = 0;
 		b = 0;
+	}
+	else if (iteration <= 1) { // if the iteration is 1, it means that the point is very close to the escape radius, we can see that coplex nuber like a greay circle.
+		r = 120;
+		g = 120;
+		b = 120;
 	}
 	else {
 		float percent = (float)iteration / MAX_ITER; // calculate the percentage of numbers iterations from 0 to MAX_ITER.  iteration begin with 1
